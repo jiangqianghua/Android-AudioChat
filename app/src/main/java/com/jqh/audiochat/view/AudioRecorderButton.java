@@ -3,9 +3,11 @@ package com.jqh.audiochat.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 
 import com.jqh.audiochat.R;
+import com.jqh.audiochat.dialog.DialogManager;
 
 /**
  * Created by jiangqianghua on 18/6/9.
@@ -20,6 +22,8 @@ public class AudioRecorderButton extends Button{
     private int mCurState = STATE_NORMAL;
     private boolean isRecording = false ;
 
+    private DialogManager mDialogManager;
+
     public AudioRecorderButton(Context context) {
         this(context,null);
     }
@@ -27,6 +31,17 @@ public class AudioRecorderButton extends Button{
 
     public AudioRecorderButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mDialogManager = new DialogManager(context);
+
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 真正显示自audio perpare后
+                mDialogManager.showRecordingDialog();
+                isRecording = true ;
+                return false;
+            }
+        });
     }
 
     @Override
@@ -51,8 +66,10 @@ public class AudioRecorderButton extends Button{
             case MotionEvent.ACTION_UP:
                 if(mCurState == STATE_RECORDING){
                     // release
+                    mDialogManager.dimissDialog();
                 }else if(mCurState == STATE_WANT_TO_CANCEL){
                     // cancel
+                    mDialogManager.dimissDialog();
                 }
                 reset();
                 break;
@@ -73,12 +90,14 @@ public class AudioRecorderButton extends Button{
                     setText(R.string.str_recorder_recording);
                     if(isRecording){
                         //TODO Dialog.recording
+                        mDialogManager.recording();
                     }
                     break;
                 case STATE_WANT_TO_CANCEL:
                     setBackgroundResource(R.drawable.btn_recording);
                     setText(R.string.str_recorder_wantcancel);
                     //TODO Dialog.wantCacel
+                    mDialogManager.wangToCancel();
                     break;
             }
         }
