@@ -78,13 +78,13 @@ public class DialogManager {
 
     public void updateVoiceLevel(int level){
         if(mDialog != null && mDialog.isShowing()){
-            mIcon.setVisibility(View.VISIBLE);
-            mVoice.setVisibility(View.VISIBLE);
-            mLabel.setVisibility(View.VISIBLE);
-            mIcon.setImageResource(R.mipmap.recorder);
+//            mIcon.setVisibility(View.VISIBLE);
+//            mVoice.setVisibility(View.VISIBLE);
+//            mLabel.setVisibility(View.VISIBLE);
+//            mIcon.setImageResource(R.mipmap.recorder);
             int resId =mContext.getResources().getIdentifier("v"+level,"mipmap",mContext.getPackageName());
             mVoice.setImageResource(resId);
-            mLabel.setText("手指上滑，取消发送");
+           // mLabel.setText("手指上滑，取消发送");
         }
     }
 
